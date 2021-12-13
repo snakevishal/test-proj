@@ -26,7 +26,7 @@ SECRET_KEY = '4=q_b65cerztfl+u!7p2)i3mxp97%zo9emlh@+(m*na!#b@7#7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -43,8 +43,15 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'post',
     "rest_framework",
+
    # Auth & social auth
-   "social_django",
+#    "social_django",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    'sslserver'
 ]
 SITE_ID = 1
 
@@ -91,7 +98,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-        "dj_rest_auth.utils.JWTCookieAuthentication",
+        # "dj_rest_auth.utils.JWTCookieAuthentication",
     ),
 }
 SIMPLE_JWT = {
@@ -112,6 +119,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 
 AUTHENTICATION_BACKENDS = [
@@ -168,3 +176,32 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "vishalmehta672@gmail.com"
 EMAIL_HOST_PASSWORD = "zapcrtpkvdmhicem"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = 435392381549941    # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'fbe8ea646f80d8708afbff68eea50035' # App Secret
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'name',
+            'name_format',
+            'picture',
+            'short_name'
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v7.0',
+    }
+}
+
